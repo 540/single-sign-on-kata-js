@@ -6,7 +6,31 @@ export default class MyService {
   }
 
   handleRequest(request) {
-    // TODO: check request has a valid SSOToken
-    return new Response(`hello ${request.getName()}!`)
+    if (this.registry.isValid(request.getSSOToken())) {
+      return new Response(`hello ${request.getName()}!`)
+    }
+
+    return new Response('Error')
+  }
+
+  registerUser(userName, userSession) {
+    let sessionResponse = this.registry.registerNewSession(
+      userName,
+      userSession
+    )
+    if (sessionResponse !== null) {
+      return sessionResponse
+    }
+
+    return new Response('Error')
+  }
+
+  unregisterUser(token) {
+    let sessionResponse = this.registry.unregister(token)
+    if (sessionResponse !== null) {
+      return new Response('Unregistered correctly')
+    }
+
+    return new Response('Error')
   }
 }
