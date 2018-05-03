@@ -10,6 +10,8 @@ export default class MyService {
       return new Response(`hello ${request.getName()}!`)
     }
 
+    this.registry.unregister()
+
     return new Response('Error')
   }
 }
